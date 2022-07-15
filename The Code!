@@ -1,0 +1,176 @@
+# Product lists
+name = ["soft drink", "onion rings", "small fries"]
+cost = [0.99, 1.29, 1.49]
+stock =  [10, 5, 20]
+
+# create continuous loop that asks user what they want to do
+while True:
+    user = input("(s)earch, (l)ist, (a)dd, (r)emove, (u)pdate, r(e)port, or (q)uit: ")
+    try:
+        user = user.lower()
+    except:
+        continue
+    
+    # user wants to search
+    if user == "s":
+        request = input("Enter a product name: ")
+        try:
+            request = request.lower()
+        except:
+            continue
+        counter = 0
+        for g in range(0, len(name)):
+            if request == name[g]:
+                counter += 1
+                num = g
+        if counter > 0:
+            print("We sell", name[num], "at", cost[num], "per unit")
+            print("We currently have", stock[num], "in stock")
+        else:
+            print("Sorry, we don't sell", request)
+    
+    # user wants to quit
+    elif user == "q":
+        print("See you soon!")
+        break
+    
+    # User wants a list
+    elif user == "l":
+        print(format("Product", '<15s'), format("Price", '<10s'), format("Quantity", '<10s'))
+        for i in range(0,len(name)):
+            print(format(name[i], '<15s'), format(str(cost[i]), '<10s'), format(str(stock[i]), '<10s'))
+    
+    # user wants to add a product
+    elif user == "a":
+        loop = 0
+        #add product name
+        while loop == 0:
+            add = input("Enter a new product name: ")
+            try:
+                add = add.lower()
+            except:
+                continue
+            counter = 0
+            for x in range(0, len(name)):
+                if add == name[x]:
+                    counter += 1
+            if counter > 0:
+                print("Sorry, we already sell that product. Try again.")
+            else:
+                name.append(add)
+                loop = 1
+        # add product cost
+        while loop == 1:
+            try:
+                add = float(input("Enter a product cost: "))
+                if add <= 0:
+                    print("Invalid cost, try again.")
+                else:
+                    add = format(add, '.2f')
+                    cost.append(add)
+                    loop = 0
+            except:
+                print("Invalid cost, try again.")
+        # add product quantity
+        while loop == 0:
+            try:
+                add = int(input("Enter a product quantity: "))
+                if add <= 0:
+                    print("Invalid quantity, try again.")
+                else:
+                    stock.append(add)
+                    loop = 1
+            except:
+                print("Invalid, quantity must be an integer.")
+    
+    # user wants to remove a product
+    elif user == "r":
+        loop = 0
+        while loop == 0:
+            remove = input("Enter a product name: ")
+            try:
+                remove = remove.lower()
+            except:
+                continue
+            counter = 0
+            for w in range(0, len(name)):
+                if remove == name[w]:
+                    counter += 1
+                    num = w
+            if counter > 0:
+                print("Product Removed!")
+                del name[num]
+                del cost[num]
+                del stock[num]
+                loop = 1
+            else:
+                print("Product doesn't exist, can't remove. Try again.")
+    
+    # user wants to update a product
+    elif user == "u":
+        loop = 0
+        while loop == 0:
+            update = input("Enter a product name: ")
+            try:
+                update = update.lower()
+            except:
+                continue
+            counter = 0
+            for y in range(0, len(name)):
+                if update == name[y]:
+                    counter += 1
+                    num = y
+            if counter > 0:
+                loop = 1
+            else:
+                print("Product doesn't exist, can't remove. Try again.")
+        print("What would you like to update?")
+        while loop == 1:
+            change = input("(n)ame, (c)ost or (q)uantity: ")
+            try:
+                change = change.lower()
+            except:
+                continue
+            if change == "n":
+                changing = input("Enter a new name: ")
+                name[num] = changing
+                loop = 0
+            elif change == "c":
+                while loop == 1:
+                    try:
+                        changing = float(input("Enter a new price: "))
+                        changing = format(changing, '.2f')
+                        cost[num] = changing
+                        loop = 0
+                    except:
+                        print("Invalid price, try again.")
+            elif change == "q":
+                while loop == 1:
+                    try:
+                        changing = int(input("Enter a new quantity: "))
+                        stock[num] = changing
+                        loop = 0
+                    except:
+                        print("Invalid quantity, try again.")
+            else:
+                print("Invalid choice, try again.")
+    
+    # user wants report
+    elif user == "e":
+        most = max(cost)
+        p1 = cost.index(most)
+        least = min(cost)
+        p2 = cost.index(least)
+        total = 0
+        for t in range(0,len(name)):
+            total += cost[t] * float( stock[t] )
+        total = format(total, '.2f')
+        print("Most expensive product: ", format(most, '>9.2f'), " (", name[p1], ")", sep='')
+        print("Least expensive product: ", format(least, '>8.2f'), " (", name[p2], ")", sep='')
+        print("Total value of all products:", total)
+    
+    # user's response does not fit into a category
+    else:
+        print("Invalid option, try again")
+
+
